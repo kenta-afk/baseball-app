@@ -19,7 +19,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <v-container>
         <Head title="Forgot Password" />
 
         <div class="mb-4 text-gray-600">
@@ -48,5 +48,5 @@ const submit = () => {
                 Email Password Reset Link
             </v-btn>
         </v-form>
-    </GuestLayout>
+    </v-container>
 </template>

@@ -26,7 +26,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <v-container>
         <Head title="Log in" />
 
         <v-alert v-if="status" type="success" class="mb-4">
@@ -74,5 +74,5 @@ const submit = () => {
                 </v-btn>
             </div>
         </v-form>
-    </GuestLayout>
+    </v-container>
 </template>
