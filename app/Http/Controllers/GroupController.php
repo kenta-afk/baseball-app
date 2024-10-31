@@ -1,9 +1,9 @@
 <?php
-
+// app/Http/Controllers/GroupController.php
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use app\Models\Group;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -29,38 +29,18 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $group = Group::create([
+            'name' => $request->name,
+        ]);
+
+        $group->users()->attach(auth()->id());
+
+        return redirect()->route('groups.index')->with('success', 'Group created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // 他のメソッドはそのまま
 }
