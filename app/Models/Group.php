@@ -11,10 +11,16 @@ class Group extends Model
 
     protected $fillable = [
         'name',
+        'admin_id', // 管理者ID
     ];
 
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

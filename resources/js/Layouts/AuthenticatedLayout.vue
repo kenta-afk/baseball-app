@@ -37,7 +37,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    Mypage
                                 </NavLink>
 
                                 <NavLink
@@ -45,6 +45,18 @@ const showingNavigationDropdown = ref(false);
                                     :active="route().current('groups.index')"
                                 >
                                     Groups
+                                </NavLink>
+                                <NavLink
+                                    :href="route('groups.join')"
+                                    :active="route().current('groups.join')"
+                                >
+                                    Join Groups
+                                </NavLink>
+                                <NavLink
+                                    :href="route('users.index')"
+                                    :active="route().current('users.index')"
+                                >
+                                    Users
                                 </NavLink>
                             </div>
                         </div>
@@ -151,13 +163,25 @@ const showingNavigationDropdown = ref(false);
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            MyPage
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('groups.index')"
                             :active="route().current('groups.index')"
                         >
-                            Dashboard
+                            Groups
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('groups.join')"
+                            :active="route().current('groups.join')"
+                        >
+                            Join Groups
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('users.index')"
+                            :active="route().current('users.index')"
+                        >
+                            Users
                         </ResponsiveNavLink>
                     </div>
 
