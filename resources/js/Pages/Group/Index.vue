@@ -8,6 +8,7 @@ import { VDataTable, VTextField, VPagination, VBtn, VContainer, VRow, VCol, VIco
 const props = defineProps({
     groups: Object,
     filters: Object,
+    userGroups: Array, // ユーザーが参加しているグループのIDリスト
 });
 
 const search = ref(props.filters.search || '');
@@ -23,6 +24,10 @@ const goToShow = (id) => {
 function goToCreate() {
     Inertia.visit(route('groups.create'));
 }
+
+const isUserInGroup = (groupId) => {
+    return props.userGroups.includes(groupId);
+};
 </script>
 
 <template>
@@ -72,7 +77,13 @@ function goToCreate() {
                     class="elevation-1"
                 >
                     <template #item.actions="{ item }">
-                        <v-btn @click="goToShow(item.id)" color="primary" class="ma-2" elevation="2">
+                        <v-btn
+                            v-if="isUserInGroup(item.id)"
+                            @click="goToShow(item.id)"
+                            color="primary"
+                            class="ma-2"
+                            elevation="2"
+                        >
                             <v-icon left>mdi-eye</v-icon>
                             Details
                         </v-btn>
@@ -88,3 +99,7 @@ function goToCreate() {
         </AuthenticatedLayout>
     </v-app>
 </template>
+
+<style scoped>
+/* 必要に応じてスタイルを追加 */
+</style>

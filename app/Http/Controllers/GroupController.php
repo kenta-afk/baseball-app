@@ -21,10 +21,12 @@ class GroupController extends Controller
         }
 
         $groups = $query->paginate(10);
+        $userGroups = auth()->user()->groups->pluck('id')->toArray(); // ユーザーが参加しているグループのIDリスト
 
         return Inertia::render('Group/Index', [
             'groups' => $groups,
             'filters' => $request->only('search'),
+            'userGroups' => $userGroups, // ビューに渡す
         ]);
     }
 
