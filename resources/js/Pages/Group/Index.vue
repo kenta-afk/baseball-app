@@ -56,7 +56,6 @@ const isUserInGroup = (groupId) => {
                             label="Search Groups"
                             single-line
                             hide-details
-                            append-inner-icon="mdi-magnify"
                         >
                             <template #append>
                                 <v-btn icon @click="performSearch">

@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $query = Group::query();
@@ -30,17 +27,11 @@ class GroupController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('Group/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -101,9 +92,11 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
+        $isAdmin = auth()->id() === $group->admin_id;
         return Inertia::render('Group/Show', [
             'group' => $group,
             'users' => $group->users,
+            'isAdmin' => $isAdmin,
         ]);
     }
 }

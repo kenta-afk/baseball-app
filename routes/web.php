@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/groups/approve-join/{joinRequest}', [GroupController::class, 'approveJoin'])->name('groups.approveJoin');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/dashboard', [GroupController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/user/{user}/stats/edit', [UserController::class, 'editStats'])->name('user.stats.edit');
+    Route::post('/user/{user}/stats/update', [UserController::class, 'updateStats'])->name('user.stats.update');
 });
 
 require __DIR__.'/auth.php';
