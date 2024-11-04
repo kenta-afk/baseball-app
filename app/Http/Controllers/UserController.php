@@ -27,8 +27,8 @@ class UserController extends Controller
 
     public function editStats(Request $request, User $user)
     {
-        $group_id = (int) $request->input('group'); // group_idを数値に変換
-        $stats = GameStat::where('user_id', $user->id)->where('group_id', $group_id)->first();
+        $group_id = (int) $request->input('group');
+        $stats = GameStat::where('user_id', $user->id)->where('group_id', $group_id)->get();
         return Inertia::render('User/Stats/Edit', ['user' => $user, 'stats' => $stats, 'group_id' => $group_id]);
     }
 
@@ -42,11 +42,11 @@ class UserController extends Controller
             'pitches' => 'required|integer',
             'walks' => 'required|integer',
             'batting_average' => 'required|numeric',
-            'group_id' => 'required|exists:groups,id', // group_idのバリデーションを追加
+            'group_id' => 'required|exists:groups,id',
         ]);
 
-        $stats = GameStat::firstOrNew(['user_id' => $user->id, 'group_id' => $request->input('group_id')]);
-        $stats->fill($request->all());
+        $stats = new GameStat($request->all());
+        $stats->user_id = $user->id;
         $stats->save();
 
         return redirect()->route('groups.show', $stats->group_id);

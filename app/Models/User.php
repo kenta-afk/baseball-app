@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class)->withTimestamps();
     }
+
+    public function gameStats()
+    {
+        return $this->hasMany(GameStat::class);
+    }
 }

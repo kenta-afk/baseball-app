@@ -22,7 +22,6 @@
                                 <v-text-field v-model="form.walks" label="Walks" type="number" required />
                                 <v-text-field v-model="form.batting_average" label="Batting Average" type="number" step="0.001" required />
                                 <input type="hidden" v-model="form.group_id" /> <!-- group_idを隠しフィールドとして追加 -->
-                                <p>Group ID: {{ form.group_id }}</p> <!-- デバッグ用にgroup_idを表示 -->
                                 <v-btn type="submit" color="primary" class="ma-2" elevation="2">
                                     Save
                                 </v-btn>
