@@ -2,11 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { VDataTable, VBtn, VContainer, VRow, VCol, VCard, VCardTitle, VCardText, VCardActions, VIcon, VDialog, VToolbar, VToolbarTitle, VSpacer, VBadge } from 'vuetify/components';
 
 const props = defineProps({
     joinRequests: Array,
+    userStats: Array, // ユーザーのスタッツを受け取る
 });
 
 const approveJoin = (id) => {
@@ -14,6 +15,46 @@ const approveJoin = (id) => {
 };
 
 const dialog = ref(false);
+
+// スタッツの合計を計算
+const totalStats = computed(() => {
+    const total = {
+        at_bats: 0,
+        hits: 0,
+        pitches: 0,
+        walks: 0,
+        batting_average: 0,
+    };
+
+    let validBattingAverageCount = 0;
+
+    console.log('User Stats:', props.userStats); // デバッグ出力
+
+    props.userStats.forEach(stat => {
+        total.at_bats += stat.at_bats || 0;
+        total.hits += stat.hits || 0;
+        total.pitches += stat.pitches || 0;
+        total.walks += stat.walks || 0;
+        const battingAverage = parseFloat(stat.batting_average);
+        if (!isNaN(battingAverage)) {
+            total.batting_average += battingAverage;
+            validBattingAverageCount++;
+        }
+    });
+
+    console.log('Total Batting Average Sum:', total.batting_average);
+    console.log('Valid Batting Average Count:', validBattingAverageCount);
+
+    if (validBattingAverageCount > 0) {
+        total.batting_average = total.batting_average / validBattingAverageCount;
+    } else {
+        total.batting_average = 0;
+    }
+
+    console.log('Final Batting Average:', total.batting_average);
+
+    return total;
+});
 </script>
 
 <template>
@@ -36,7 +77,40 @@ const dialog = ref(false);
                 <v-container class="py-12">
                     <v-row justify="center">
                         <v-col cols="12" md="8">
-                            <!-- 他のコンテンツ -->
+                            <v-card class="elevation-3 mb-4">
+                                <v-card-title>
+                                    <span class="text-h6">Total Stats</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
+                                        <v-col cols="6" md="4">At Bats: {{ totalStats.at_bats }}</v-col>
+                                        <v-col cols="6" md="4">Hits: {{ totalStats.hits }}</v-col>
+                                        <v-col cols="6" md="4">Pitches: {{ totalStats.pitches }}</v-col>
+                                        <v-col cols="6" md="4">Walks: {{ totalStats.walks }}</v-col>
+                                        <v-col cols="6" md="4">Batting Average: {{ totalStats.batting_average.toFixed(3) }}</v-col>
+                                    </v-row>
+                                </v-card-text>
+                            </v-card>
+                            <v-card class="elevation-3">
+                                <v-card-title>
+                                    <span class="text-h6">User Stats</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-data-table
+                                        :headers="[
+                                            { text: 'Date', value: 'date' },
+                                            { text: 'Opponent', value: 'opponent' },
+                                            { text: 'At Bats', value: 'at_bats' },
+                                            { text: 'Hits', value: 'hits' },
+                                            { text: 'Pitches', value: 'pitches' },
+                                            { text: 'Walks', value: 'walks' },
+                                            { text: 'Batting Average', value: 'batting_average' },
+                                        ]"
+                                        :items="props.userStats"
+                                        class="elevation-1"
+                                    ></v-data-table>
+                                </v-card-text>
+                            </v-card>
                         </v-col>
                     </v-row>
                 </v-container>

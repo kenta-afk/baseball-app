@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Group;
+use App\Models\GameStat;
 use App\Models\JoinRequest;
 use Illuminate\Http\Request;
 
@@ -85,8 +86,12 @@ class GroupController extends Controller
             $query->where('admin_id', $user->id);
         })->with('user', 'group')->get();
 
+        // スタッツを入力された順に取得
+        $userStats = GameStat::where('user_id', $user->id)->orderBy('created_at', 'asc')->get();
+
         return Inertia::render('Dashboard', [
             'joinRequests' => $joinRequests,
+            'userStats' => $userStats,
         ]);
     }
 
