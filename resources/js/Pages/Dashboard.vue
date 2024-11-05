@@ -10,6 +10,28 @@ const props = defineProps({
     userStats: Array, // ユーザーのスタッツを受け取る
 });
 
+const headers = [
+    { text: 'Date', value: 'date' },
+    { text: 'Opponent', value: 'opponent' },
+    { text: 'At Bats', value: 'at_bats' },
+    { text: 'Hits', value: 'hits' },
+    { text: 'Pitches', value: 'pitches' },
+    { text: 'Walks', value: 'walks' },
+    { text: 'Batting Average', value: 'batting_average' },
+];
+
+const joinRequestHeaders = [
+    { text: 'User', value: 'user.name' },
+    { text: 'Group', value: 'group.name' },
+    { text: 'Actions', value: 'actions', sortable: false },
+];
+
+const sortedUserStats = computed(() => {
+    return [...props.userStats].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+});
+
+
+
 const approveJoin = (id) => {
     Inertia.post(route('groups.approveJoin', id));
 };
@@ -28,9 +50,9 @@ const totalStats = computed(() => {
 
     let validBattingAverageCount = 0;
 
-    console.log('User Stats:', props.userStats); // デバッグ出力
+    
 
-    props.userStats.forEach(stat => {
+    sortedUserStats.value.forEach(stat => {
         total.at_bats += stat.at_bats || 0;
         total.hits += stat.hits || 0;
         total.pitches += stat.pitches || 0;
@@ -41,9 +63,8 @@ const totalStats = computed(() => {
             validBattingAverageCount++;
         }
     });
-
-    console.log('Total Batting Average Sum:', total.batting_average);
-    console.log('Valid Batting Average Count:', validBattingAverageCount);
+   
+   
 
     if (validBattingAverageCount > 0) {
         total.batting_average = total.batting_average / validBattingAverageCount;
@@ -51,7 +72,7 @@ const totalStats = computed(() => {
         total.batting_average = 0;
     }
 
-    console.log('Final Batting Average:', total.batting_average);
+   
 
     return total;
 });
@@ -97,16 +118,8 @@ const totalStats = computed(() => {
                                 </v-card-title>
                                 <v-card-text>
                                     <v-data-table
-                                        :headers="[
-                                            { text: 'Date', value: 'date' },
-                                            { text: 'Opponent', value: 'opponent' },
-                                            { text: 'At Bats', value: 'at_bats' },
-                                            { text: 'Hits', value: 'hits' },
-                                            { text: 'Pitches', value: 'pitches' },
-                                            { text: 'Walks', value: 'walks' },
-                                            { text: 'Batting Average', value: 'batting_average' },
-                                        ]"
-                                        :items="props.userStats"
+                                        :headers="headers"
+                                        :items="sortedUserStats"
                                         class="elevation-1"
                                     ></v-data-table>
                                 </v-card-text>
@@ -124,11 +137,7 @@ const totalStats = computed(() => {
                 </v-card-title>
                 <v-card-text>
                     <v-data-table
-                        :headers="[
-                            { text: 'User', value: 'user.name' },
-                            { text: 'Group', value: 'group.name' },
-                            { text: 'Actions', value: 'actions', sortable: false },
-                        ]"
+                        :headers="joinRequestHeaders"
                         :items="props.joinRequests"
                         class="elevation-1"
                     >
