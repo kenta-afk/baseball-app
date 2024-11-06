@@ -10,7 +10,7 @@ const props = defineProps({
     userStats: Array, // ユーザーのスタッツを受け取る
 });
 
-const headers = [
+const headers = ref([
     { text: 'Date', value: 'date' },
     { text: 'Opponent', value: 'opponent' },
     { text: 'At Bats', value: 'at_bats' },
@@ -18,7 +18,7 @@ const headers = [
     { text: 'Pitches', value: 'pitches' },
     { text: 'Walks', value: 'walks' },
     { text: 'Batting Average', value: 'batting_average' },
-];
+]);
 
 const joinRequestHeaders = [
     { text: 'User', value: 'user.name' },
@@ -104,17 +104,17 @@ const totalStats = computed(() => {
                                 </v-card-title>
                                 <v-card-text>
                                     <v-row>
-                                        <v-col cols="6" md="4">At Bats: {{ totalStats.at_bats }}</v-col>
-                                        <v-col cols="6" md="4">Hits: {{ totalStats.hits }}</v-col>
-                                        <v-col cols="6" md="4">Pitches: {{ totalStats.pitches }}</v-col>
-                                        <v-col cols="6" md="4">Walks: {{ totalStats.walks }}</v-col>
-                                        <v-col cols="6" md="4">Batting Average: {{ totalStats.batting_average.toFixed(3) }}</v-col>
+                                        <v-col cols="6" md="4">打数: {{ totalStats.at_bats }}</v-col>
+                                        <v-col cols="6" md="4">安打: {{ totalStats.hits }}</v-col>
+                                        <v-col cols="6" md="4">投球数: {{ totalStats.pitches }}</v-col>
+                                        <v-col cols="6" md="4">四球: {{ totalStats.walks }}</v-col>
+                                        <v-col cols="6" md="4">打率: {{ totalStats.batting_average.toFixed(3) }}</v-col>
                                     </v-row>
                                 </v-card-text>
                             </v-card>
                             <v-card class="elevation-3">
                                 <v-card-title>
-                                    <span class="text-h6">User Stats</span>
+                                    <span class="text-h6">User Stats(打数・安打・投球数・四球・打率)</span>
                                 </v-card-title>
                                 <v-card-text>
                                     <v-data-table

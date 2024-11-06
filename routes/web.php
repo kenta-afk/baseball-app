@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
     Route::post('/groups/request-join', [GroupController::class, 'requestJoin'])->name('groups.requestJoin');
     Route::post('/groups/approve-join/{joinRequest}', [GroupController::class, 'approveJoin'])->name('groups.approveJoin');
+    Route::delete('/groups/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
+    Route::delete('/groups/{group}/remove-user/{user}', [GroupController::class, 'removeUser'])->name('groups.removeUser');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/dashboard', [GroupController::class, 'dashboard'])->name('dashboard');
 

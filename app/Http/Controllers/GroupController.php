@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Group;
+use App\Models\User;
 use App\Models\GameStat;
 use App\Models\JoinRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -103,5 +105,34 @@ class GroupController extends Controller
             'users' => $group->users,
             'isAdmin' => $isAdmin,
         ]);
+    }
+
+    public function destroy(Group $group)
+    {
+        // 管理者のみが削除できるようにする
+        if (Auth::id() !== $group->admin_id) {
+            return redirect()->route('groups.index')->with('error', 'You do not have permission to delete this group.');
+        }
+
+        $group->delete();
+
+        return redirect()->route('groups.index')->with('success', 'Group deleted successfully.');
+    }
+
+    public function removeUser(Request $request, Group $group, User $user)
+    {
+        // 管理者のみが削除できるようにする
+        if (Auth::id() !== $group->admin_id) {
+            return redirect()->route('groups.show', $group->id)->with('error', 'You do not have permission to remove users from this group.');
+        }
+
+        // 管理者自身を削除できないようにする
+        if ($user->id === $group->admin_id) {
+            return redirect()->route('groups.show', $group->id)->with('error', 'You cannot remove yourself from the group.');
+        }
+
+        $group->users()->detach($user->id);
+
+        return redirect()->route('groups.show', $group->id)->with('success', 'User removed from group successfully.');
     }
 }
