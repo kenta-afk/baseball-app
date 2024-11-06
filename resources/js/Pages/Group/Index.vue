@@ -9,6 +9,7 @@ const props = defineProps({
     groups: Object,
     filters: Object,
     userGroups: Array, // ユーザーが参加しているグループのIDリスト
+    auth: Object, // 認証情報を追加
 });
 
 const search = ref(props.filters.search || '');
@@ -27,6 +28,16 @@ function goToCreate() {
 
 const isUserInGroup = (groupId) => {
     return props.userGroups.includes(groupId);
+};
+
+const isAdmin = (group) => {
+    return group.admin_id === props.auth.user.id;
+};
+
+const deleteGroup = (groupId) => {
+    if (confirm('Are you sure you want to delete this group?')) {
+        Inertia.delete(route('groups.destroy', groupId));
+    }
 };
 </script>
 
@@ -85,6 +96,16 @@ const isUserInGroup = (groupId) => {
                         >
                             <v-icon left>mdi-eye</v-icon>
                             Details
+                        </v-btn>
+                        <v-btn
+                            v-if="isAdmin(item)"
+                            @click="deleteGroup(item.id)"
+                            color="red"
+                            class="ma-2"
+                            elevation="2"
+                        >
+                            <v-icon left>mdi-delete</v-icon>
+                            Delete
                         </v-btn>
                     </template>
                 </v-data-table>
