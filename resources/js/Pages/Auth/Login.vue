@@ -23,6 +23,10 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const loginWithGoogle = () => {
+    window.location.href = route('login.google');
+};
 </script>
 
 <template>
@@ -71,6 +75,17 @@ const submit = () => {
                     @click="submit"
                 >
                     Log in
+                </v-btn>
+            </div>
+            <div class="flex items-center justify-end mt-4">
+                <v-btn
+                    color="red"
+                    dark
+                    @click="loginWithGoogle"
+                    class="ml-3"
+                >
+                    <v-icon left>mdi-google</v-icon>
+                    Googleでログイン
                 </v-btn>
             </div>
         </v-form>

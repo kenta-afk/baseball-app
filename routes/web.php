@@ -3,6 +3,7 @@
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GoogleLoginController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,6 +16,13 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])
+    ->name('login.google');
+
+Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])
+    ->name('login.google.callback');
+
 
 Route::get('/dashboard', [GroupController::class, 'dashboard'])->name('dashboard');
 
