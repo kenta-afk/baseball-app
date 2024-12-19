@@ -16,11 +16,11 @@
                             <v-form @submit.prevent="submit">
                                 <v-text-field v-model="form.date" label="Date" type="date" required />
                                 <v-text-field v-model="form.opponent" label="Opponent" required />
-                                <v-text-field v-model="form.at_bats" label="At Bats" type="number" required />
-                                <v-text-field v-model="form.hits" label="Hits" type="number" required />
-                                <v-text-field v-model="form.pitches" label="Pitches" type="number" required />
-                                <v-text-field v-model="form.walks" label="Walks" type="number" required />
-                                <v-text-field v-model="form.batting_average" label="Batting Average" type="number" step="0.001" required />
+                                <v-text-field v-model="form.at_bats" label="打数" type="number" required />
+                                <v-text-field v-model="form.hits" label="安打" type="number" required />
+                                <v-text-field v-model="form.pitches" label="投球数" type="number" required />
+                                <v-text-field v-model="form.walks" label="四球" type="number" required />
+                                <v-text-field v-model="form.batting_average" label="打率" type="number" step="0.001" required />
                                 <input type="hidden" v-model="form.group_id" /> <!-- group_idを隠しフィールドとして追加 -->
                                 <v-btn type="submit" color="primary" class="ma-2" elevation="2">
                                     Save
